@@ -6,7 +6,10 @@
 <title>ST-CITY EAS</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 html,body{
     margin:0;
@@ -23,32 +26,54 @@ button{
     cursor:pointer;
 }
 
-.hidden{display:none!important}
+.hidden{
+    display:none!important;
+}
 
-/* START */
+
+/* =====================================================
+   START
+===================================================== */
 
 #startScreen{
     position:fixed;
     inset:0;
     z-index:99999;
+
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
+
     background:
-        radial-gradient(circle at center,#26303c,#10151c 45%,#050609);
+        radial-gradient(
+            circle at center,
+            #26303c,
+            #10151c 45%,
+            #050609
+        );
 }
 
 .logo{
     width:105px;
     height:105px;
     border-radius:28px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     font-size:52px;
-    background:linear-gradient(145deg,#303b48,#0c1016);
-    box-shadow:0 25px 80px rgba(0,0,0,.7);
+
+    background:
+        linear-gradient(
+            145deg,
+            #303b48,
+            #0c1016
+        );
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.7);
 }
 
 .startTitle{
@@ -84,9 +109,18 @@ button{
 
 #startButton{
     border:0;
-    background:linear-gradient(135deg,#e00000,#830000);
+
+    background:
+        linear-gradient(
+            135deg,
+            #e00000,
+            #830000
+        );
+
     color:white;
-    box-shadow:0 12px 35px rgba(220,0,0,.3);
+
+    box-shadow:
+        0 12px 35px rgba(220,0,0,.3);
 }
 
 #notificationButton{
@@ -99,7 +133,10 @@ button{
     transform:translateY(-2px);
 }
 
-/* HOME */
+
+/* =====================================================
+   HOME
+===================================================== */
 
 #home{
     position:absolute;
@@ -111,6 +148,7 @@ button{
     width:min(1000px,100%);
     height:100%;
     margin:auto;
+
     display:flex;
     flex-direction:column;
 }
@@ -118,6 +156,7 @@ button{
 .header{
     height:65px;
     flex-shrink:0;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -132,11 +171,14 @@ button{
 .brandIcon{
     width:44px;
     height:44px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     border-radius:12px;
     background:#151b24;
+
     font-size:22px;
 }
 
@@ -155,10 +197,13 @@ button{
     display:flex;
     align-items:center;
     gap:8px;
+
     padding:8px 12px;
     border-radius:10px;
+
     background:#11161d;
     color:#a0a9b5;
+
     font-size:9px;
     font-weight:800;
 }
@@ -167,20 +212,30 @@ button{
     width:8px;
     height:8px;
     border-radius:50%;
+
     background:#35dd76;
-    box-shadow:0 0 10px #35dd76;
+
+    box-shadow:
+        0 0 10px #35dd76;
 }
 
-/* TOP TICKER */
+
+/* =====================================================
+   HISTORY
+===================================================== */
 
 .historyBar{
     height:40px;
     flex-shrink:0;
+
     display:flex;
     align-items:center;
+
     overflow:hidden;
     position:relative;
+
     background:#0b1016;
+
     border-top:1px solid #202733;
     border-bottom:1px solid #202733;
 }
@@ -189,14 +244,21 @@ button{
     position:absolute;
     left:0;
     top:0;
+
     height:100%;
     z-index:5;
+
     display:flex;
     align-items:center;
+
     padding:0 14px;
+
     background:#0b1016;
+
     border-right:1px solid #202733;
+
     color:#8e98a5;
+
     font-size:9px;
     font-weight:900;
 }
@@ -210,7 +272,9 @@ button{
 .historyTrack{
     display:inline-flex;
     white-space:nowrap;
-    animation:historyMove 22s linear infinite;
+
+    animation:
+        historyMove 22s linear infinite;
 }
 
 .historyItem{
@@ -224,103 +288,167 @@ button{
 }
 
 @keyframes historyMove{
-    from{transform:translateX(100%)}
-    to{transform:translateX(-100%)}
+
+    from{
+        transform:translateX(100%);
+    }
+
+    to{
+        transform:translateX(-100%);
+    }
+
 }
 
-/* MAIN */
+
+/* =====================================================
+   HOME CARD
+===================================================== */
 
 .homeCard{
     flex:1;
     min-height:0;
+
     margin-top:18px;
+
     display:flex;
     align-items:center;
     justify-content:center;
     flex-direction:column;
+
     border:1px solid #222a35;
     border-radius:22px;
+
     background:
-        radial-gradient(circle at 50% 25%,rgba(100,120,150,.13),transparent 45%),
+        radial-gradient(
+            circle at 50% 25%,
+            rgba(100,120,150,.13),
+            transparent 45%
+        ),
         #0d1218;
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.35);
 }
 
 .readyIcon{
     width:95px;
     height:95px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     border-radius:50%;
+
     background:#151c24;
+
     color:#45e57c;
+
     font-size:48px;
 }
 
 .readyTitle{
     margin-top:20px;
+
     font-size:30px;
     font-weight:900;
 }
 
 .readyText{
     margin-top:8px;
+
     color:#8e98a6;
+
     font-size:13px;
+
     text-align:center;
 }
 
 .info{
     width:min(600px,90%);
+
     margin-top:22px;
+
     padding:15px;
+
     border-radius:13px;
+
     background:#111720;
+
     color:#929dab;
+
     font-size:11px;
     line-height:1.6;
+
     text-align:center;
 }
 
 .footer{
     height:42px;
     flex-shrink:0;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     color:#4f5967;
+
     font-size:9px;
     letter-spacing:1px;
 }
 
-/* MINI ALERT */
+
+/* =====================================================
+   MINI ALERT
+===================================================== */
 
 #miniAlert{
     position:fixed;
+
     right:18px;
     bottom:18px;
+
     z-index:5000;
-    width:min(360px,calc(100vw - 30px));
+
+    width:min(
+        360px,
+        calc(100vw - 30px)
+    );
+
     padding:14px;
+
     display:none;
+
     border:1px solid rgba(255,255,255,.18);
     border-radius:16px;
+
     background:rgba(14,17,22,.97);
+
     backdrop-filter:blur(15px);
-    box-shadow:0 20px 60px rgba(0,0,0,.6);
-    animation:miniIn .3s ease;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.6);
+
+    animation:
+        miniIn .3s ease;
 }
 
 @keyframes miniIn{
+
     from{
         opacity:0;
-        transform:translateY(20px) scale(.95);
+        transform:
+            translateY(20px)
+            scale(.95);
     }
+
     to{
         opacity:1;
-        transform:translateY(0) scale(1);
+        transform:
+            translateY(0)
+            scale(1);
     }
+
 }
 
 .miniTop{
@@ -332,10 +460,13 @@ button{
 .miniIcon{
     width:38px;
     height:38px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     border-radius:10px;
+
     background:#620000;
 }
 
@@ -346,156 +477,274 @@ button{
 
 .miniText{
     margin-top:5px;
+
     color:#a6afbb;
+
     font-size:10px;
 }
 
 #openAlertButton{
     width:100%;
+
     margin-top:12px;
+
     padding:10px;
+
     border:0;
     border-radius:9px;
+
     background:#b90000;
+
     color:white;
+
     font-size:10px;
     font-weight:900;
 }
 
-/* ALERT */
+
+/* =====================================================
+   ALERT SCREEN
+===================================================== */
 
 #alertScreen{
     position:fixed;
     inset:0;
+
     z-index:10000;
+
     display:none;
     flex-direction:column;
 }
 
+
+/* NORMAL */
+
 #alertScreen.normal{
     background:
-        radial-gradient(circle at center,#d68c00,#754600 48%,#211300);
+        radial-gradient(
+            circle at center,
+            #d68c00,
+            #754600 48%,
+            #211300
+        );
 }
+
+
+/* HIGH */
+
+#alertScreen.high{
+    background:
+        radial-gradient(
+            circle at center,
+            #168cff,
+            #0755ad 48%,
+            #02234d
+        );
+}
+
+
+/* CRITICAL */
 
 #alertScreen.critical{
     background:
-        radial-gradient(circle at center,#f00000,#800000 48%,#220000);
+        radial-gradient(
+            circle at center,
+            #f00000,
+            #800000 48%,
+            #220000
+        );
 }
 
+
+/* FLASH */
+
 #alertScreen.flash{
-    animation:easFlash .7s infinite alternate;
+    animation:
+        easFlash .7s infinite alternate;
 }
 
 @keyframes easFlash{
-    from{filter:brightness(1)}
-    to{filter:brightness(1.12)}
+
+    from{
+        filter:brightness(1);
+    }
+
+    to{
+        filter:brightness(1.12);
+    }
+
 }
 
-/* ALERT BAR */
+
+/* =====================================================
+   ALERT BAR
+===================================================== */
 
 .alertTopBar{
     height:46px;
     flex-shrink:0;
+
     display:flex;
     align-items:center;
+
     overflow:hidden;
     position:relative;
+
     background:rgba(0,0,0,.42);
-    border-bottom:1px solid rgba(255,255,255,.3);
+
+    border-bottom:
+        1px solid rgba(255,255,255,.3);
 }
 
 .alertTopLabel{
     position:absolute;
+
     left:0;
     top:0;
+
     height:100%;
     z-index:5;
+
     display:flex;
     align-items:center;
+
     padding:0 14px;
+
     background:rgba(0,0,0,.45);
+
     font-size:9px;
     font-weight:900;
 }
 
 .alertTickerWindow{
     width:100%;
+
     overflow:hidden;
+
     margin-left:145px;
 }
 
 .alertTicker{
     display:inline-flex;
     white-space:nowrap;
-    animation:alertTickerMove 18s linear infinite;
+
+    animation:
+        alertTickerMove 18s linear infinite;
 }
 
 .alertTickerItem{
     padding-right:130px;
+
     font-size:10px;
     font-weight:800;
 }
 
 @keyframes alertTickerMove{
-    from{transform:translateX(100%)}
-    to{transform:translateX(-100%)}
+
+    from{
+        transform:translateX(100%);
+    }
+
+    to{
+        transform:translateX(-100%);
+    }
+
 }
 
-/* ALERT CONTENT */
+
+/* =====================================================
+   ALERT CONTENT
+===================================================== */
 
 .alertContent{
     flex:1;
     min-height:0;
+
     overflow:auto;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     padding:20px;
 }
 
 .alertCard{
     width:min(900px,100%);
+
     padding:28px;
+
     text-align:center;
-    border:2px solid rgba(255,255,255,.65);
+
+    border:
+        2px solid rgba(255,255,255,.65);
+
     border-radius:22px;
-    background:rgba(0,0,0,.35);
+
+    background:
+        rgba(0,0,0,.35);
+
     backdrop-filter:blur(15px);
-    box-shadow:0 30px 100px rgba(0,0,0,.6);
-    animation:alertIn .3s ease-out;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.6);
+
+    animation:
+        alertIn .3s ease-out;
 }
 
 @keyframes alertIn{
+
     from{
         opacity:0;
         transform:scale(.92);
     }
+
     to{
         opacity:1;
         transform:scale(1);
     }
+
 }
 
 .alertIcon{
     font-size:55px;
-    animation:iconPulse .55s infinite alternate;
+
+    animation:
+        iconPulse .55s infinite alternate;
 }
 
 @keyframes iconPulse{
-    from{transform:scale(1)}
-    to{transform:scale(1.12)}
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.12);
+    }
+
 }
 
 .alertLabel{
     margin-top:5px;
+
     font-size:10px;
     font-weight:900;
+
     letter-spacing:4px;
 }
 
 #alertTitle{
     margin:8px 0 5px;
-    font-size:clamp(27px,5vw,48px);
+
+    font-size:
+        clamp(
+            27px,
+            5vw,
+            48px
+        );
+
     font-weight:950;
 }
 
@@ -504,25 +753,38 @@ button{
     font-weight:800;
 }
 
-/* INSTRUCTIONS */
+
+/* =====================================================
+   INSTRUCTIONS
+===================================================== */
 
 .instructions{
     margin-top:20px;
+
     display:grid;
+
     grid-template-columns:1fr 1fr;
+
     gap:12px;
 }
 
 .language{
     padding:15px;
-    border:1px solid rgba(255,255,255,.2);
+
+    border:
+        1px solid rgba(255,255,255,.2);
+
     border-radius:13px;
-    background:rgba(0,0,0,.22);
+
+    background:
+        rgba(0,0,0,.22);
+
     text-align:left;
 }
 
 .languageTitle{
     margin-bottom:7px;
+
     font-size:12px;
     font-weight:900;
 }
@@ -537,23 +799,75 @@ button{
     padding-left:20px;
 }
 
+#normalInstructions,
+#highInstructions,
 #criticalInstructions{
     display:none;
 }
 
-/* BOTTOM */
+
+/* =====================================================
+   HIGH STYLE
+===================================================== */
+
+#alertScreen.high .alertCard{
+
+    background:
+        rgba(0,45,105,.55);
+
+    border-color:
+        rgba(170,220,255,.7);
+
+    box-shadow:
+        0 30px 100px rgba(0,80,180,.55);
+}
+
+#alertScreen.high .alertLabel{
+    color:#c9ecff;
+}
+
+#alertScreen.high .alertIcon{
+    filter:
+        drop-shadow(
+            0 0 15px
+            rgba(100,210,255,.8)
+        );
+}
+
+#alertScreen.high .language{
+
+    background:
+        rgba(0,80,170,.28);
+
+    border-color:
+        rgba(160,220,255,.3);
+}
+
+#alertScreen.high #alertMessage{
+    color:#e5f7ff;
+}
+
+
+/* =====================================================
+   BOTTOM
+===================================================== */
 
 .alertBottom{
     margin-top:18px;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     gap:15px;
+
     flex-wrap:wrap;
 }
 
 .timer{
-    color:rgba(255,255,255,.8);
+    color:
+        rgba(255,255,255,.8);
+
     font-size:11px;
 }
 
@@ -564,27 +878,44 @@ button{
 
 #stopButton{
     padding:11px 22px;
-    border:1px solid rgba(255,255,255,.5);
+
+    border:
+        1px solid rgba(255,255,255,.5);
+
     border-radius:10px;
+
     color:white;
-    background:rgba(0,0,0,.35);
+
+    background:
+        rgba(0,0,0,.35);
+
     font-size:11px;
     font-weight:900;
 }
 
 #stopButton:hover{
-    background:rgba(0,0,0,.6);
+    background:
+        rgba(0,0,0,.6);
 }
 
-/* MOBILE */
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:650px){
 
-    #home{padding:0 8px}
+    #home{
+        padding:0 8px;
+    }
 
-    .startTitle{font-size:30px}
+    .startTitle{
+        font-size:30px;
+    }
 
-    .brandSub{display:none}
+    .brandSub{
+        display:none;
+    }
 
     .historyLabel,
     .alertTopLabel{
@@ -616,17 +947,25 @@ button{
     .instructions{
         grid-template-columns:1fr;
     }
+
 }
+
 </style>
 </head>
 
+
 <body>
 
-<!-- START -->
+
+<!-- =====================================================
+     START SCREEN
+===================================================== -->
 
 <div id="startScreen">
 
-    <div class="logo">🚨</div>
+    <div class="logo">
+        🚨
+    </div>
 
     <div class="startTitle">
         ST-CITY EAS
@@ -652,7 +991,9 @@ button{
 </div>
 
 
-<!-- HOME -->
+<!-- =====================================================
+     HOME
+===================================================== -->
 
 <div id="home">
 
@@ -662,7 +1003,9 @@ button{
 
             <div class="brand">
 
-                <div class="brandIcon">🚨</div>
+                <div class="brandIcon">
+                    🚨
+                </div>
 
                 <div>
 
@@ -689,7 +1032,7 @@ button{
         </div>
 
 
-        <!-- TOP LIST -->
+        <!-- HISTORY -->
 
         <div class="historyBar">
 
@@ -699,13 +1042,19 @@ button{
 
             <div class="historyWindow">
 
-                <div id="historyTrack" class="historyTrack">
+                <div
+                    id="historyTrack"
+                    class="historyTrack"
+                >
 
                     <div class="historyItem">
+
                         Systém je připraven.
+
                         <strong>
                             Žádné aktivní upozornění
                         </strong>
+
                     </div>
 
                 </div>
@@ -714,6 +1063,8 @@ button{
 
         </div>
 
+
+        <!-- HOME CARD -->
 
         <div class="homeCard">
 
@@ -726,14 +1077,20 @@ button{
             </div>
 
             <div class="readyText">
-                V tuto chvíli není aktivní žádná mimořádná událost.
+
+                V tuto chvíli není aktivní
+                žádná mimořádná událost.
+
             </div>
 
             <div class="info">
+
                 ST-CITY EAS automaticky sleduje stav
                 nouzových upozornění.
+
                 Pokud bude vydáno upozornění,
                 zobrazí se zde.
+
             </div>
 
         </div>
@@ -748,13 +1105,18 @@ button{
 </div>
 
 
-<!-- MINI ALERT -->
+<!-- =====================================================
+     MINI ALERT
+===================================================== -->
 
 <div id="miniAlert">
 
     <div class="miniTop">
 
-        <div class="miniIcon">
+        <div
+            id="miniIcon"
+            class="miniIcon"
+        >
             🚨
         </div>
 
@@ -764,7 +1126,10 @@ button{
                 ST-CITY EAS
             </div>
 
-            <div id="miniType" class="miniText">
+            <div
+                id="miniType"
+                class="miniText"
+            >
                 Aktivní upozornění
             </div>
 
@@ -772,7 +1137,10 @@ button{
 
     </div>
 
-    <div id="miniDetails" class="miniText">
+    <div
+        id="miniDetails"
+        class="miniText"
+    >
         Upozornění je aktivní.
     </div>
 
@@ -783,7 +1151,9 @@ button{
 </div>
 
 
-<!-- FULL ALERT -->
+<!-- =====================================================
+     FULL ALERT
+===================================================== -->
 
 <div id="alertScreen">
 
@@ -795,7 +1165,10 @@ button{
 
         <div class="alertTickerWindow">
 
-            <div id="alertTicker" class="alertTicker">
+            <div
+                id="alertTicker"
+                class="alertTicker"
+            >
 
                 <div class="alertTickerItem">
                     🚨 ST-CITY EAS • NOUZOVÉ UPOZORNĚNÍ
@@ -812,11 +1185,17 @@ button{
 
         <div class="alertCard">
 
-            <div class="alertIcon">
+            <div
+                id="alertIcon"
+                class="alertIcon"
+            >
                 🚨
             </div>
 
-            <div class="alertLabel">
+            <div
+                id="alertLabel"
+                class="alertLabel"
+            >
                 NOUZOVÉ UPOZORNĚNÍ
             </div>
 
@@ -831,7 +1210,10 @@ button{
 
             <!-- NORMAL -->
 
-            <div id="normalInstructions" class="instructions">
+            <div
+                id="normalInstructions"
+                class="instructions"
+            >
 
                 <div class="language">
 
@@ -842,6 +1224,7 @@ button{
                     <div class="languageText">
 
                         <ol>
+
                             <li>
                                 Zůstaňte uvnitř budov a domů.
                             </li>
@@ -854,6 +1237,7 @@ button{
                             <li>
                                 Sledujte další pokyny ST-CITY.
                             </li>
+
                         </ol>
 
                     </div>
@@ -870,6 +1254,7 @@ button{
                     <div class="languageText">
 
                         <ol>
+
                             <li>
                                 Stay inside buildings and homes.
                             </li>
@@ -882,6 +1267,96 @@ button{
                             <li>
                                 Follow further ST-CITY instructions.
                             </li>
+
+                        </ol>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HIGH / WASP -->
+
+            <div
+                id="highInstructions"
+                class="instructions"
+            >
+
+                <div class="language">
+
+                    <div class="languageTitle">
+                        🇨🇿 🐝 VOSA V DOMĚ – CO MÁTE DĚLAT
+                    </div>
+
+                    <div class="languageText">
+
+                        <ol>
+
+                            <li>
+                                Zachovejte klid.
+                            </li>
+
+                            <li>
+                                Nevstupujte do místnosti,
+                                kde se vosa nachází.
+                            </li>
+
+                            <li>
+                                Pokud je to možné,
+                                opusťte místnost a zavřete dveře.
+                            </li>
+
+                            <li>
+                                Informujte dospělého
+                                nebo jinou odpovědnou osobu.
+                            </li>
+
+                            <li>
+                                Nepokoušejte se vosu chytat sami.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+                </div>
+
+
+                <div class="language">
+
+                    <div class="languageTitle">
+                        🇬🇧 🐝 WASP IN THE HOUSE – WHAT TO DO
+                    </div>
+
+                    <div class="languageText">
+
+                        <ol>
+
+                            <li>
+                                Stay calm.
+                            </li>
+
+                            <li>
+                                Do not enter the room
+                                where the wasp is located.
+                            </li>
+
+                            <li>
+                                If possible,
+                                leave the room and close the door.
+                            </li>
+
+                            <li>
+                                Inform an adult
+                                or another responsible person.
+                            </li>
+
+                            <li>
+                                Do not try to catch the wasp yourself.
+                            </li>
+
                         </ol>
 
                     </div>
@@ -893,7 +1368,10 @@ button{
 
             <!-- CRITICAL -->
 
-            <div id="criticalInstructions" class="instructions">
+            <div
+                id="criticalInstructions"
+                class="instructions"
+            >
 
                 <div class="language">
 
@@ -904,6 +1382,7 @@ button{
                     <div class="languageText">
 
                         <ol>
+
                             <li>
                                 Okamžitě opusťte budovu.
                             </li>
@@ -927,6 +1406,7 @@ button{
                             <li>
                                 Za dveřmi se nachází nouzový bunkr.
                             </li>
+
                         </ol>
 
                     </div>
@@ -943,6 +1423,7 @@ button{
                     <div class="languageText">
 
                         <ol>
+
                             <li>
                                 Leave the building immediately.
                             </li>
@@ -966,6 +1447,7 @@ button{
                             <li>
                                 The emergency bunker is behind the door.
                             </li>
+
                         </ol>
 
                     </div>
@@ -1020,10 +1502,6 @@ button{
 const SUPABASE_URL =
     "https://knpkaoddloxtzdtzwjle.supabase.co";
 
-/*
-   SEM VLOŽ SUPABASE ANON/PUBLISHABLE KEY
-*/
-
 const SUPABASE_KEY =
     "sb_publishable_6_Qh3KpwhahrywU2o2irDg_ffK-MP3z";
 
@@ -1052,6 +1530,12 @@ const notificationButton =
 const alertScreen =
     document.getElementById("alertScreen");
 
+const alertIcon =
+    document.getElementById("alertIcon");
+
+const alertLabel =
+    document.getElementById("alertLabel");
+
 const alertTitle =
     document.getElementById("alertTitle");
 
@@ -1060,6 +1544,9 @@ const alertMessage =
 
 const normalInstructions =
     document.getElementById("normalInstructions");
+
+const highInstructions =
+    document.getElementById("highInstructions");
 
 const criticalInstructions =
     document.getElementById("criticalInstructions");
@@ -1078,6 +1565,9 @@ const easSound =
 
 const miniAlert =
     document.getElementById("miniAlert");
+
+const miniIcon =
+    document.getElementById("miniIcon");
 
 const miniType =
     document.getElementById("miniType");
@@ -1124,7 +1614,6 @@ async function requestNotificationPermission(){
         );
 
         return;
-
     }
 
     try{
@@ -1184,7 +1673,6 @@ function updateNotificationButton(){
             "🔕 OZNÁMENÍ NEJSOU PODPOROVÁNA";
 
         return;
-
     }
 
     if(
@@ -1196,6 +1684,7 @@ function updateNotificationButton(){
             "✓ OZNÁMENÍ POVOLENA";
 
     }
+
     else if(
         Notification.permission ===
         "denied"
@@ -1205,6 +1694,7 @@ function updateNotificationButton(){
             "🔕 OZNÁMENÍ ZAMÍTNUTA";
 
     }
+
     else{
 
         notificationButton.textContent =
@@ -1285,7 +1775,7 @@ easSound.addEventListener(
 
 
 /* =====================================================
-   START
+   START EAS + FULLSCREEN
 ===================================================== */
 
 startButton.addEventListener(
@@ -1294,10 +1784,39 @@ startButton.addEventListener(
 
         systemStarted = true;
 
+
+        /* FULLSCREEN */
+
+        try{
+
+            if(!document.fullscreenElement){
+
+                await document.documentElement.requestFullscreen();
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "Fullscreen se nepodařilo aktivovat:",
+                error
+            );
+
+        }
+
+
+        /* SCHOVAT START */
+
         startScreen.style.display =
             "none";
 
+
+        /* ODEMKNOUT AUDIO */
+
         await unlockAudio();
+
+
+        /* OZNÁMENÍ */
 
         if(
             "Notification" in window &&
@@ -1308,21 +1827,36 @@ startButton.addEventListener(
 
         }
 
-        /*
-           Kontrola ihned.
-        */
+
+        /* PRVNÍ KONTROLA */
 
         checkSupabase();
 
-        /*
-           Potom každých 5 sekund.
-        */
+
+        /* KONTROLA KAŽDÝCH 5 SEKUND */
 
         checkTimer =
             setInterval(
                 checkSupabase,
                 CHECK_INTERVAL
             );
+
+    }
+);
+
+
+/* =====================================================
+   FULLSCREEN STATUS
+===================================================== */
+
+document.addEventListener(
+    "fullscreenchange",
+    () => {
+
+        console.log(
+            "Fullscreen:",
+            !!document.fullscreenElement
+        );
 
     }
 );
@@ -1344,12 +1878,14 @@ async function checkSupabase(){
             "/rest/v1/alerts" +
             "?select=id,status,hight";
 
+
         const response =
             await fetch(
                 url,
                 {
                     method:"GET",
                     cache:"no-store",
+
                     headers:{
                         "apikey":
                             SUPABASE_KEY,
@@ -1376,7 +1912,6 @@ async function checkSupabase(){
             );
 
             return;
-
         }
 
 
@@ -1400,6 +1935,7 @@ async function checkSupabase(){
             const status =
                 Number(row.status);
 
+
             const type =
                 String(
                     row.hight || ""
@@ -1412,11 +1948,13 @@ async function checkSupabase(){
                 status === 1 &&
                 (
                     type === "normal" ||
+                    type === "high" ||
                     type === "critical"
                 )
             ){
 
                 activeAlert = row;
+
                 break;
 
             }
@@ -1424,9 +1962,7 @@ async function checkSupabase(){
         }
 
 
-        /*
-           ŽÁDNÝ ALERT
-        */
+        /* ŽÁDNÝ ALERT */
 
         if(!activeAlert){
 
@@ -1450,9 +1986,7 @@ async function checkSupabase(){
             .toLowerCase();
 
 
-        /*
-           Uživatel ho zavřel.
-        */
+        /* ZAVŘENÝ ALERT */
 
         if(
             dismissedAlertId === id
@@ -1463,9 +1997,7 @@ async function checkSupabase(){
         }
 
 
-        /*
-           NOVÝ ALERT
-        */
+        /* NOVÝ ALERT */
 
         if(!alertActive){
 
@@ -1479,9 +2011,7 @@ async function checkSupabase(){
         }
 
 
-        /*
-           ZMĚNA ALERTU
-        */
+        /* ZMĚNA ALERTU */
 
         if(
             currentAlertId !== id ||
@@ -1540,24 +2070,30 @@ function startAlert(
         type
     );
 
+
     updateTicker(
         time,
         type
     );
+
 
     updateMini(
         time,
         type
     );
 
+
     showAlert(type);
+
 
     sendSystemNotification(
         type,
         id
     );
 
+
     playEAS();
+
 
     startCountdown();
 
@@ -1578,10 +2114,12 @@ function sendSystemNotification(
     )
         return;
 
+
     if(
         !("Notification" in window)
     )
         return;
+
 
     if(
         Notification.permission !==
@@ -1593,20 +2131,39 @@ function sendSystemNotification(
     notifiedAlertId = id;
 
 
-    const critical =
-        type === "critical";
+    let title;
+    let body;
 
 
-    const title =
-        critical
-        ? "🚨 ST-CITY EAS – KRITICKÉ UPOZORNĚNÍ"
-        : "🚨 ST-CITY EAS – NOUZOVÉ UPOZORNĚNÍ";
+    if(type === "critical"){
 
+        title =
+            "🚨 ST-CITY EAS – KRITICKÉ UPOZORNĚNÍ";
 
-    const body =
-        critical
-        ? "Okamžitě se řiďte pokyny ST-CITY."
-        : "Zůstaňte uvnitř a sledujte další pokyny ST-CITY.";
+        body =
+            "Okamžitě se řiďte pokyny ST-CITY.";
+
+    }
+
+    else if(type === "high"){
+
+        title =
+            "🐝 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
+
+        body =
+            "V domě byla zaznamenána vosa. Zachovejte klid a informujte dospělého.";
+
+    }
+
+    else{
+
+        title =
+            "🚨 ST-CITY EAS – NOUZOVÉ UPOZORNĚNÍ";
+
+        body =
+            "Zůstaňte uvnitř a sledujte další pokyny ST-CITY.";
+
+    }
 
 
     try{
@@ -1616,10 +2173,16 @@ function sendSystemNotification(
                 title,
                 {
                     body,
+
                     tag:
-                        "st-city-eas-" + id,
-                    requireInteraction:true,
-                    renotify:true
+                        "st-city-eas-" +
+                        id,
+
+                    requireInteraction:
+                        true,
+
+                    renotify:
+                        true
                 }
             );
 
@@ -1658,33 +2221,30 @@ function showAlert(type){
 
     alertScreen.classList.remove(
         "normal",
+        "high",
         "critical"
     );
+
 
     alertScreen.classList.add(
         type
     );
+
 
     alertScreen.classList.add(
         "flash"
     );
 
 
-    if(type === "critical"){
+    /* NORMAL */
 
-        alertTitle.textContent =
-            "ST-CITY KRITICKÉ UPOZORNĚNÍ";
+    if(type === "normal"){
 
-        alertMessage.textContent =
-            "OKAMŽITĚ SE ŘIĎTE POKYNY";
+        alertIcon.textContent =
+            "🚨";
 
-        normalInstructions.style.display =
-            "none";
-
-        criticalInstructions.style.display =
-            "grid";
-
-    }else{
+        alertLabel.textContent =
+            "NOUZOVÉ UPOZORNĚNÍ";
 
         alertTitle.textContent =
             "ST-CITY NOUZOVÉ UPOZORNĚNÍ";
@@ -1692,11 +2252,73 @@ function showAlert(type){
         alertMessage.textContent =
             "ZŮSTAŇTE UVNITŘ A SLEDUJTE POKYNY";
 
+
         normalInstructions.style.display =
+            "grid";
+
+        highInstructions.style.display =
+            "none";
+
+        criticalInstructions.style.display =
+            "none";
+
+    }
+
+
+    /* HIGH */
+
+    else if(type === "high"){
+
+        alertIcon.textContent =
+            "🐝";
+
+        alertLabel.textContent =
+            "VYSOKÉ UPOZORNĚNÍ";
+
+        alertTitle.textContent =
+            "VOSA V DOMĚ";
+
+        alertMessage.textContent =
+            "V DOMĚ BYLA ZAZNAMENÁNA VOSA. ZACHOVEJTE KLID.";
+
+
+        normalInstructions.style.display =
+            "none";
+
+        highInstructions.style.display =
             "grid";
 
         criticalInstructions.style.display =
             "none";
+
+    }
+
+
+    /* CRITICAL */
+
+    else if(type === "critical"){
+
+        alertIcon.textContent =
+            "🚨";
+
+        alertLabel.textContent =
+            "KRITICKÉ UPOZORNĚNÍ";
+
+        alertTitle.textContent =
+            "ST-CITY KRITICKÉ UPOZORNĚNÍ";
+
+        alertMessage.textContent =
+            "OKAMŽITĚ SE ŘIĎTE POKYNY";
+
+
+        normalInstructions.style.display =
+            "none";
+
+        highInstructions.style.display =
+            "none";
+
+        criticalInstructions.style.display =
+            "grid";
 
     }
 
@@ -1736,9 +2358,6 @@ async function playEAS(){
             error
         );
 
-        /*
-           Druhý pokus.
-        */
 
         setTimeout(
             async () => {
@@ -1792,30 +2411,40 @@ function endAlert(){
 
     alertActive = false;
 
+
     clearInterval(
         countdownTimer
     );
 
+
     countdownTimer = null;
 
+
     stopEAS();
+
 
     alertScreen.style.display =
         "none";
 
+
     alertScreen.classList.remove(
         "normal",
+        "high",
         "critical",
         "flash"
     );
 
+
     miniAlert.style.display =
         "none";
+
 
     seconds.textContent =
         "60";
 
-    notifiedAlertId = null;
+
+    notifiedAlertId =
+        null;
 
 }
 
@@ -1827,12 +2456,6 @@ function endAlert(){
 stopButton.addEventListener(
     "click",
     () => {
-
-        /*
-           Uložíme ID,
-           aby se stejný alert
-           po další kontrole znovu neotevřel.
-        */
 
         dismissedAlertId =
             currentAlertId;
@@ -1927,28 +2550,59 @@ function updateHistory(
     type
 ){
 
-    const name =
-        type === "critical"
-        ? "KRITICKÉ UPOZORNĚNÍ"
-        : "NOUZOVÉ UPOZORNĚNÍ";
+    let name;
+    let icon;
+
+
+    if(type === "critical"){
+
+        name =
+            "KRITICKÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+    }
+
+    else if(type === "high"){
+
+        name =
+            "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
+
+        icon =
+            "🐝";
+
+    }
+
+    else{
+
+        name =
+            "NOUZOVÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+    }
 
 
     historyTrack.innerHTML = `
 
         <div class="historyItem">
 
-            🚨
+            ${icon}
 
             <strong>
                 ${name}
             </strong>
 
             • vydáno v
+
             <strong>
                 ${time}
             </strong>
 
             • STAV:
+
             <strong>
                 AKTIVNÍ
             </strong>
@@ -1968,7 +2622,7 @@ function updateHistory(
 
 
 /* =====================================================
-   ALERT TICKER
+   TICKER
 ===================================================== */
 
 function updateTicker(
@@ -1976,28 +2630,65 @@ function updateTicker(
     type
 ){
 
-    const name =
-        type === "critical"
-        ? "KRITICKÉ UPOZORNĚNÍ"
-        : "NOUZOVÉ UPOZORNĚNÍ";
+    let name;
+    let icon;
+
+
+    if(type === "critical"){
+
+        name =
+            "KRITICKÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+    }
+
+    else if(type === "high"){
+
+        name =
+            "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
+
+        icon =
+            "🐝";
+
+    }
+
+    else{
+
+        name =
+            "NOUZOVÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+    }
 
 
     alertTicker.innerHTML = `
 
         <div class="alertTickerItem">
 
-            🚨 ST-CITY EAS
+            ${icon}
+            ST-CITY EAS
+
             • ${name}
+
             • ČAS: ${time}
+
             • STAV: AKTIVNÍ
+
             • ŘIĎTE SE POKYNY
 
         </div>
 
         <div class="alertTickerItem">
 
-            🚨 ST-CITY EAS
+            ${icon}
+            ST-CITY EAS
+
             • ${name}
+
             • ČAS: ${time}
 
         </div>
@@ -2016,18 +2707,75 @@ function updateMini(
     type
 ){
 
-    const name =
-        type === "critical"
-        ? "KRITICKÉ UPOZORNĚNÍ"
-        : "NOUZOVÉ UPOZORNĚNÍ";
+    let name;
+    let icon;
+    let buttonColor;
+
+
+    if(type === "critical"){
+
+        name =
+            "KRITICKÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+        buttonColor =
+            "#b90000";
+
+    }
+
+    else if(type === "high"){
+
+        name =
+            "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
+
+        icon =
+            "🐝";
+
+        buttonColor =
+            "#0876d1";
+
+    }
+
+    else{
+
+        name =
+            "NOUZOVÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+        buttonColor =
+            "#b90000";
+
+    }
+
+
+    miniIcon.textContent =
+        icon;
+
+
+    miniIcon.style.background =
+        type === "high"
+        ? "#075ca5"
+        : "#620000";
 
 
     miniType.textContent =
-        name + " • " + time;
+        name +
+        " • " +
+        time;
 
 
     miniDetails.textContent =
-        "ST-CITY EAS • UPOZORNĚNÍ JE AKTIVNÍ";
+        type === "high"
+        ? "🐝 V domě byla zaznamenána vosa."
+        : "ST-CITY EAS • UPOZORNĚNÍ JE AKTIVNÍ";
+
+
+    openAlertButton.style.background =
+        buttonColor;
 
 
     miniAlert.style.display =
@@ -2122,6 +2870,19 @@ console.log(
 console.log(
     "EAS audio:",
     "./EAS.ogg"
+);
+
+console.log(
+    "Typy:",
+    "normal / high / critical"
+);
+
+console.log(
+    "HIGH = 🐝 VOSA V DOMĚ"
+);
+
+console.log(
+    "SPUSTIT EAS = FULLSCREEN"
 );
 
 console.log(
