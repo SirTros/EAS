@@ -556,6 +556,19 @@ button{
 }
 
 
+/* GAS */
+
+#alertScreen.gas{
+    background:
+        radial-gradient(
+            circle at center,
+            #237a36,
+            #123d1d 48%,
+            #041208
+        );
+}
+
+
 /* FLASH */
 
 #alertScreen.flash{
@@ -801,7 +814,8 @@ button{
 
 #normalInstructions,
 #highInstructions,
-#criticalInstructions{
+#criticalInstructions,
+#gasInstructions{
     display:none;
 }
 
@@ -845,6 +859,48 @@ button{
 
 #alertScreen.high #alertMessage{
     color:#e5f7ff;
+}
+
+
+/* =====================================================
+   GAS STYLE
+===================================================== */
+
+#alertScreen.gas .alertCard{
+
+    background:
+        rgba(4,40,12,.58);
+
+    border-color:
+        rgba(100,220,120,.7);
+
+    box-shadow:
+        0 30px 100px rgba(0,100,30,.55);
+}
+
+#alertScreen.gas .alertLabel{
+    color:#baffc2;
+}
+
+#alertScreen.gas .alertIcon{
+    filter:
+        drop-shadow(
+            0 0 18px
+            rgba(80,255,100,.85)
+        );
+}
+
+#alertScreen.gas .language{
+
+    background:
+        rgba(10,80,25,.3);
+
+    border-color:
+        rgba(110,220,125,.35);
+}
+
+#alertScreen.gas #alertMessage{
+    color:#e5ffe9;
 }
 
 
@@ -1452,6 +1508,97 @@ button{
             </div>
 
 
+            <!-- GAS -->
+
+            <div
+                id="gasInstructions"
+                class="instructions"
+            >
+
+                <div class="language">
+
+                    <div class="languageTitle">
+                        🇨🇿 🚨 NEBEZPEČNÝ PLYN – CO MÁTE DĚLAT
+                    </div>
+
+                    <div class="languageText">
+
+                        <ol>
+
+                            <li>
+                                Zachovejte klid.
+                            </li>
+
+                            <li>
+                                Jděte domů nebo do bezpečné budovy.
+                            </li>
+
+                            <li>
+                                Zavřete všechna okna.
+                            </li>
+
+                            <li>
+                                Zavřete všechny dveře.
+                            </li>
+
+                            <li>
+                                Zůstaňte uvnitř.
+                            </li>
+
+                            <li>
+                                Sledujte další pokyny ST-CITY EAS.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+                </div>
+
+
+                <div class="language">
+
+                    <div class="languageTitle">
+                        🇬🇧 🚨 DANGEROUS GAS – WHAT TO DO
+                    </div>
+
+                    <div class="languageText">
+
+                        <ol>
+
+                            <li>
+                                Stay calm.
+                            </li>
+
+                            <li>
+                                Go home or into a safe building.
+                            </li>
+
+                            <li>
+                                Close all windows.
+                            </li>
+
+                            <li>
+                                Close all doors.
+                            </li>
+
+                            <li>
+                                Stay inside.
+                            </li>
+
+                            <li>
+                                Follow further ST-CITY EAS instructions.
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
             <div class="alertBottom">
 
                 <div class="timer">
@@ -1507,11 +1654,6 @@ const SUPABASE_KEY =
 
 const CHECK_INTERVAL = 5000;
 
-/*
-   59 sekund.
-   Po uplynutí se alert automaticky ukončí
-   a jeho ID se označí jako zpracované.
-*/
 const ALERT_DURATION = 59000;
 
 
@@ -1551,6 +1693,9 @@ const highInstructions =
 
 const criticalInstructions =
     document.getElementById("criticalInstructions");
+
+const gasInstructions =
+    document.getElementById("gasInstructions");
 
 const seconds =
     document.getElementById("seconds");
@@ -1600,15 +1745,6 @@ let checkTimer = null;
 
 let notifiedAlertId = null;
 
-/*
-   ID alertu, který už byl ukončen.
-   
-   Pokud Supabase stále vrací stejné ID,
-   alarm se znovu nespustí.
-
-   Jakmile přijde nové ID,
-   alarm se znovu spustí.
-*/
 let dismissedAlertId = null;
 
 
@@ -1912,12 +2048,6 @@ async function checkSupabase(){
             await response.json();
 
 
-        console.log(
-            "Supabase alerts:",
-            rows
-        );
-
-
         let activeAlert = null;
 
 
@@ -1942,7 +2072,8 @@ async function checkSupabase(){
                 (
                     type === "normal" ||
                     type === "high" ||
-                    type === "critical"
+                    type === "critical" ||
+                    type === "gas"
                 )
             ){
 
@@ -1955,9 +2086,7 @@ async function checkSupabase(){
         }
 
 
-        /* =================================================
-           ŽÁDNÝ AKTIVNÍ ALERT
-        ================================================= */
+        /* ŽÁDNÝ ALERT */
 
         if(!activeAlert){
 
@@ -1966,14 +2095,6 @@ async function checkSupabase(){
                 endAlert(false);
 
             }
-
-            /*
-               Důležité:
-               Když se alert v Supabase vypne,
-               smažeme dismissed ID.
-
-               Další nový alert se tedy může normálně spustit.
-            */
 
             dismissedAlertId = null;
 
@@ -1991,30 +2112,18 @@ async function checkSupabase(){
             .toLowerCase();
 
 
-        /* =================================================
-           ALERT UŽ BYL UKONČEN
-        ================================================= */
+        /* ALERT UŽ BYL UKONČEN */
 
         if(
             dismissedAlertId === id
         ){
-
-            /*
-               Supabase stále říká status=1,
-               ale tento konkrétní alert už byl
-               uživatelem nebo časovačem ukončen.
-
-               NIC NEDĚLÁME.
-            */
 
             return;
 
         }
 
 
-        /* =================================================
-           NOVÝ ALERT
-        ================================================= */
+        /* NOVÝ ALERT */
 
         if(!alertActive){
 
@@ -2028,9 +2137,7 @@ async function checkSupabase(){
         }
 
 
-        /* =================================================
-           ZMĚNA ALERTU
-        ================================================= */
+        /* ZMĚNA ALERTU */
 
         if(
             currentAlertId !== id ||
@@ -2065,11 +2172,6 @@ function startAlert(
     type,
     id
 ){
-
-    /*
-       Pokud je to ID, které už bylo ukončeno,
-       nespouštíme ho.
-    */
 
     if(
         dismissedAlertId === id
@@ -2177,13 +2279,23 @@ function sendSystemNotification(
 
     }
 
+    else if(type === "gas"){
+
+        title =
+            "🚨 ST-CITY EAS – NEBEZPEČNÝ PLYN";
+
+        body =
+            "Jděte domů, zavřete okna a dveře a zůstaňte uvnitř.";
+
+    }
+
     else if(type === "high"){
 
         title =
             "🚨 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
 
         body =
-            "V domě byla zaznamenána vosa. Zachovejte klid a informujte dospělého.";
+            "V domě byla zaznamenána vosa. Zachovejte klid.";
 
     }
 
@@ -2254,7 +2366,8 @@ function showAlert(type){
     alertScreen.classList.remove(
         "normal",
         "high",
-        "critical"
+        "critical",
+        "gas"
     );
 
 
@@ -2266,6 +2379,19 @@ function showAlert(type){
     alertScreen.classList.add(
         "flash"
     );
+
+
+    normalInstructions.style.display =
+        "none";
+
+    highInstructions.style.display =
+        "none";
+
+    criticalInstructions.style.display =
+        "none";
+
+    gasInstructions.style.display =
+        "none";
 
 
     /* NORMAL */
@@ -2288,22 +2414,12 @@ function showAlert(type){
         normalInstructions.style.display =
             "grid";
 
-        highInstructions.style.display =
-            "none";
-
-        criticalInstructions.style.display =
-            "none";
-
     }
 
 
     /* HIGH / VOSA */
 
     else if(type === "high"){
-
-        /*
-           Místo 🐝 používáme maják 🚨
-        */
 
         alertIcon.textContent =
             "🚨";
@@ -2318,14 +2434,8 @@ function showAlert(type){
             "V DOMĚ BYLA ZAZNAMENÁNA VOSA. ZACHOVEJTE KLID.";
 
 
-        normalInstructions.style.display =
-            "none";
-
         highInstructions.style.display =
             "grid";
-
-        criticalInstructions.style.display =
-            "none";
 
     }
 
@@ -2347,13 +2457,30 @@ function showAlert(type){
             "OKAMŽITĚ SE ŘIĎTE POKYNY";
 
 
-        normalInstructions.style.display =
-            "none";
-
-        highInstructions.style.display =
-            "none";
-
         criticalInstructions.style.display =
+            "grid";
+
+    }
+
+
+    /* GAS */
+
+    else if(type === "gas"){
+
+        alertIcon.textContent =
+            "🚨";
+
+        alertLabel.textContent =
+            "KRITICKÉ UPOZORNĚNÍ";
+
+        alertTitle.textContent =
+            "NEBEZPEČNÝ PLYN";
+
+        alertMessage.textContent =
+            "BYL ZAZNAMENÁN NEBEZPEČNÝ PLYN. JĎĚTE DOMŮ A ZŮSTAŇTE UVNITŘ.";
+
+
+        gasInstructions.style.display =
             "grid";
 
     }
@@ -2394,27 +2521,6 @@ async function playEAS(){
             error
         );
 
-
-        setTimeout(
-            async () => {
-
-                try{
-
-                    await easSound.play();
-
-                }catch(e){
-
-                    console.error(
-                        "Druhý pokus selhal:",
-                        e
-                    );
-
-                }
-
-            },
-            100
-        );
-
     }
 
 }
@@ -2446,14 +2552,6 @@ function stopEAS(){
 function endAlert(
     rememberDismissed = true
 ){
-
-    /*
-       Uložíme ID právě ukončeného alertu.
-
-       To je nejdůležitější změna:
-       Supabase může mít pořád status=1,
-       ale tento alert se už znovu nespustí.
-    */
 
     if(
         rememberDismissed &&
@@ -2488,6 +2586,7 @@ function endAlert(
         "normal",
         "high",
         "critical",
+        "gas",
         "flash"
     );
 
@@ -2520,13 +2619,6 @@ function endAlert(
 stopButton.addEventListener(
     "click",
     () => {
-
-        /*
-           Tlačítko funguje stejně jako automatický
-           konec po 59 sekundách.
-
-           Aktuální ID se uloží do dismissedAlertId.
-        */
 
         endAlert(true);
 
@@ -2602,13 +2694,6 @@ function startCountdown(){
                     remaining <= 0
                 ){
 
-                    /*
-                       Automatické ukončení = také
-                       zapamatovat ID.
-
-                       Proto se stejný alert už nespustí.
-                    */
-
                     endAlert(true);
 
                 }
@@ -2637,6 +2722,16 @@ function updateHistory(
 
         name =
             "KRITICKÉ UPOZORNĚNÍ";
+
+        icon =
+            "🚨";
+
+    }
+
+    else if(type === "gas"){
+
+        name =
+            "NEBEZPEČNÝ PLYN";
 
         icon =
             "🚨";
@@ -2710,7 +2805,6 @@ function updateTicker(
 ){
 
     let name;
-    let icon;
 
 
     if(type === "critical"){
@@ -2718,8 +2812,12 @@ function updateTicker(
         name =
             "KRITICKÉ UPOZORNĚNÍ";
 
-        icon =
-            "🚨";
+    }
+
+    else if(type === "gas"){
+
+        name =
+            "NEBEZPEČNÝ PLYN";
 
     }
 
@@ -2728,18 +2826,12 @@ function updateTicker(
         name =
             "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
 
-        icon =
-            "🚨";
-
     }
 
     else{
 
         name =
             "NOUZOVÉ UPOZORNĚNÍ";
-
-        icon =
-            "🚨";
 
     }
 
@@ -2748,7 +2840,7 @@ function updateTicker(
 
         <div class="alertTickerItem">
 
-            ${icon}
+            🚨
             ST-CITY EAS
 
             • ${name}
@@ -2763,7 +2855,7 @@ function updateTicker(
 
         <div class="alertTickerItem">
 
-            ${icon}
+            🚨
             ST-CITY EAS
 
             • ${name}
@@ -2787,8 +2879,8 @@ function updateMini(
 ){
 
     let name;
-    let icon;
     let buttonColor;
+    let details;
 
 
     if(type === "critical"){
@@ -2796,11 +2888,24 @@ function updateMini(
         name =
             "KRITICKÉ UPOZORNĚNÍ";
 
-        icon =
-            "🚨";
-
         buttonColor =
             "#b90000";
+
+        details =
+            "🚨 ST-CITY EAS • KRITICKÉ UPOZORNĚNÍ";
+
+    }
+
+    else if(type === "gas"){
+
+        name =
+            "NEBEZPEČNÝ PLYN";
+
+        buttonColor =
+            "#176b2b";
+
+        details =
+            "🚨 Byl zaznamenán nebezpečný plyn. Jděte domů a zůstaňte uvnitř.";
 
     }
 
@@ -2809,15 +2914,11 @@ function updateMini(
         name =
             "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
 
-        /*
-           VOSA = MAJÁK
-        */
-
-        icon =
-            "🚨";
-
         buttonColor =
             "#0876d1";
+
+        details =
+            "🚨 V domě byla zaznamenána vosa.";
 
     }
 
@@ -2826,23 +2927,39 @@ function updateMini(
         name =
             "NOUZOVÉ UPOZORNĚNÍ";
 
-        icon =
-            "🚨";
-
         buttonColor =
             "#b90000";
+
+        details =
+            "ST-CITY EAS • UPOZORNĚNÍ JE AKTIVNÍ";
 
     }
 
 
     miniIcon.textContent =
-        icon;
+        "🚨";
 
 
-    miniIcon.style.background =
-        type === "high"
-        ? "#075ca5"
-        : "#620000";
+    if(type === "gas"){
+
+        miniIcon.style.background =
+            "#145b25";
+
+    }
+
+    else if(type === "high"){
+
+        miniIcon.style.background =
+            "#075ca5";
+
+    }
+
+    else{
+
+        miniIcon.style.background =
+            "#620000";
+
+    }
 
 
     miniType.textContent =
@@ -2852,9 +2969,7 @@ function updateMini(
 
 
     miniDetails.textContent =
-        type === "high"
-        ? "🚨 V domě byla zaznamenána vosa."
-        : "ST-CITY EAS • UPOZORNĚNÍ JE AKTIVNÍ";
+        details;
 
 
     openAlertButton.style.background =
@@ -2951,7 +3066,20 @@ console.log(
 );
 
 console.log(
+    "Typy:",
+    "normal / high / critical / gas"
+);
+
+console.log(
     "HIGH = 🚨 VOSA V DOMĚ"
+);
+
+console.log(
+    "GAS = 🚨 NEBEZPEČNÝ PLYN"
+);
+
+console.log(
+    "GAS background = DARK GREEN"
 );
 
 console.log(
@@ -2964,11 +3092,6 @@ console.log(
 
 console.log(
     "Nové ID = nový alarm."
-);
-
-console.log(
-    "Notifications:",
-    "Notification" in window
 );
 
 console.log(
