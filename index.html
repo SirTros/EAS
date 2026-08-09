@@ -953,7 +953,6 @@ button{
 </style>
 </head>
 
-
 <body>
 
 
@@ -1032,8 +1031,6 @@ button{
         </div>
 
 
-        <!-- HISTORY -->
-
         <div class="historyBar">
 
             <div class="historyLabel">
@@ -1063,8 +1060,6 @@ button{
 
         </div>
 
-
-        <!-- HOME CARD -->
 
         <div class="homeCard">
 
@@ -1287,7 +1282,7 @@ button{
                 <div class="language">
 
                     <div class="languageTitle">
-                        🇨🇿 🐝 VOSA V DOMĚ – CO MÁTE DĚLAT
+                        🇨🇿 🚨 VOSA V DOMĚ – CO MÁTE DĚLAT
                     </div>
 
                     <div class="languageText">
@@ -1327,7 +1322,7 @@ button{
                 <div class="language">
 
                     <div class="languageTitle">
-                        🇬🇧 🐝 WASP IN THE HOUSE – WHAT TO DO
+                        🇬🇧 🚨 WASP IN THE HOUSE – WHAT TO DO
                     </div>
 
                     <div class="languageText">
@@ -1464,7 +1459,7 @@ button{
                     Upozornění:
 
                     <span id="seconds">
-                        60
+                        59
                     </span>
 
                     s
@@ -1511,7 +1506,13 @@ const SUPABASE_KEY =
 ===================================================== */
 
 const CHECK_INTERVAL = 5000;
-const ALERT_DURATION = 60000;
+
+/*
+   59 sekund.
+   Po uplynutí se alert automaticky ukončí
+   a jeho ID se označí jako zpracované.
+*/
+const ALERT_DURATION = 59000;
 
 
 /* =====================================================
@@ -1598,6 +1599,16 @@ let countdownTimer = null;
 let checkTimer = null;
 
 let notifiedAlertId = null;
+
+/*
+   ID alertu, který už byl ukončen.
+   
+   Pokud Supabase stále vrací stejné ID,
+   alarm se znovu nespustí.
+
+   Jakmile přijde nové ID,
+   alarm se znovu spustí.
+*/
 let dismissedAlertId = null;
 
 
@@ -1784,9 +1795,6 @@ startButton.addEventListener(
 
         systemStarted = true;
 
-
-        /* FULLSCREEN */
-
         try{
 
             if(!document.fullscreenElement){
@@ -1804,19 +1812,10 @@ startButton.addEventListener(
 
         }
 
-
-        /* SCHOVAT START */
-
         startScreen.style.display =
             "none";
 
-
-        /* ODEMKNOUT AUDIO */
-
         await unlockAudio();
-
-
-        /* OZNÁMENÍ */
 
         if(
             "Notification" in window &&
@@ -1827,13 +1826,7 @@ startButton.addEventListener(
 
         }
 
-
-        /* PRVNÍ KONTROLA */
-
         checkSupabase();
-
-
-        /* KONTROLA KAŽDÝCH 5 SEKUND */
 
         checkTimer =
             setInterval(
@@ -1962,15 +1955,27 @@ async function checkSupabase(){
         }
 
 
-        /* ŽÁDNÝ ALERT */
+        /* =================================================
+           ŽÁDNÝ AKTIVNÍ ALERT
+        ================================================= */
 
         if(!activeAlert){
 
             if(alertActive){
 
-                endAlert();
+                endAlert(false);
 
             }
+
+            /*
+               Důležité:
+               Když se alert v Supabase vypne,
+               smažeme dismissed ID.
+
+               Další nový alert se tedy může normálně spustit.
+            */
+
+            dismissedAlertId = null;
 
             return;
 
@@ -1986,18 +1991,30 @@ async function checkSupabase(){
             .toLowerCase();
 
 
-        /* ZAVŘENÝ ALERT */
+        /* =================================================
+           ALERT UŽ BYL UKONČEN
+        ================================================= */
 
         if(
             dismissedAlertId === id
         ){
+
+            /*
+               Supabase stále říká status=1,
+               ale tento konkrétní alert už byl
+               uživatelem nebo časovačem ukončen.
+
+               NIC NEDĚLÁME.
+            */
 
             return;
 
         }
 
 
-        /* NOVÝ ALERT */
+        /* =================================================
+           NOVÝ ALERT
+        ================================================= */
 
         if(!alertActive){
 
@@ -2011,7 +2028,9 @@ async function checkSupabase(){
         }
 
 
-        /* ZMĚNA ALERTU */
+        /* =================================================
+           ZMĚNA ALERTU
+        ================================================= */
 
         if(
             currentAlertId !== id ||
@@ -2047,6 +2066,20 @@ function startAlert(
     id
 ){
 
+    /*
+       Pokud je to ID, které už bylo ukončeno,
+       nespouštíme ho.
+    */
+
+    if(
+        dismissedAlertId === id
+    ){
+
+        return;
+
+    }
+
+
     alertActive = true;
 
     currentAlertId = id;
@@ -2055,7 +2088,6 @@ function startAlert(
     alertStartTime =
         Date.now();
 
-    dismissedAlertId = null;
     notifiedAlertId = null;
 
 
@@ -2148,7 +2180,7 @@ function sendSystemNotification(
     else if(type === "high"){
 
         title =
-            "🐝 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
+            "🚨 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
 
         body =
             "V domě byla zaznamenána vosa. Zachovejte klid a informujte dospělého.";
@@ -2265,12 +2297,16 @@ function showAlert(type){
     }
 
 
-    /* HIGH */
+    /* HIGH / VOSA */
 
     else if(type === "high"){
 
+        /*
+           Místo 🐝 používáme maják 🚨
+        */
+
         alertIcon.textContent =
-            "🐝";
+            "🚨";
 
         alertLabel.textContent =
             "VYSOKÉ UPOZORNĚNÍ";
@@ -2407,7 +2443,28 @@ function stopEAS(){
    END ALERT
 ===================================================== */
 
-function endAlert(){
+function endAlert(
+    rememberDismissed = true
+){
+
+    /*
+       Uložíme ID právě ukončeného alertu.
+
+       To je nejdůležitější změna:
+       Supabase může mít pořád status=1,
+       ale tento alert se už znovu nespustí.
+    */
+
+    if(
+        rememberDismissed &&
+        currentAlertId !== null
+    ){
+
+        dismissedAlertId =
+            String(currentAlertId);
+
+    }
+
 
     alertActive = false;
 
@@ -2440,11 +2497,18 @@ function endAlert(){
 
 
     seconds.textContent =
-        "60";
+        "59";
 
 
     notifiedAlertId =
         null;
+
+
+    console.log(
+        "ST-CITY EAS: ALERT UKONČEN",
+        "ID:",
+        dismissedAlertId
+    );
 
 }
 
@@ -2457,10 +2521,14 @@ stopButton.addEventListener(
     "click",
     () => {
 
-        dismissedAlertId =
-            currentAlertId;
+        /*
+           Tlačítko funguje stejně jako automatický
+           konec po 59 sekundách.
 
-        endAlert();
+           Aktuální ID se uloží do dismissedAlertId.
+        */
+
+        endAlert(true);
 
     }
 );
@@ -2497,6 +2565,10 @@ function startCountdown(){
     );
 
 
+    seconds.textContent =
+        "59";
+
+
     countdownTimer =
         setInterval(
             () => {
@@ -2530,7 +2602,14 @@ function startCountdown(){
                     remaining <= 0
                 ){
 
-                    endAlert();
+                    /*
+                       Automatické ukončení = také
+                       zapamatovat ID.
+
+                       Proto se stejný alert už nespustí.
+                    */
+
+                    endAlert(true);
 
                 }
 
@@ -2570,7 +2649,7 @@ function updateHistory(
             "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
 
         icon =
-            "🐝";
+            "🚨";
 
     }
 
@@ -2650,7 +2729,7 @@ function updateTicker(
             "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
 
         icon =
-            "🐝";
+            "🚨";
 
     }
 
@@ -2730,8 +2809,12 @@ function updateMini(
         name =
             "VYSOKÉ UPOZORNĚNÍ • VOSA V DOMĚ";
 
+        /*
+           VOSA = MAJÁK
+        */
+
         icon =
-            "🐝";
+            "🚨";
 
         buttonColor =
             "#0876d1";
@@ -2770,7 +2853,7 @@ function updateMini(
 
     miniDetails.textContent =
         type === "high"
-        ? "🐝 V domě byla zaznamenána vosa."
+        ? "🚨 V domě byla zaznamenána vosa."
         : "ST-CITY EAS • UPOZORNĚNÍ JE AKTIVNÍ";
 
 
@@ -2868,21 +2951,19 @@ console.log(
 );
 
 console.log(
-    "EAS audio:",
-    "./EAS.ogg"
-);
-
-console.log(
-    "Typy:",
-    "normal / high / critical"
-);
-
-console.log(
-    "HIGH = 🐝 VOSA V DOMĚ"
+    "HIGH = 🚨 VOSA V DOMĚ"
 );
 
 console.log(
     "SPUSTIT EAS = FULLSCREEN"
+);
+
+console.log(
+    "Po 59 s se stejné ID už znovu nespustí."
+);
+
+console.log(
+    "Nové ID = nový alarm."
 );
 
 console.log(
@@ -2897,4 +2978,4 @@ console.log(
 </script>
 
 </body>
-</html>
+    </html>
