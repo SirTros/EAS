@@ -3392,5 +3392,152 @@ console.log(
 
 </script>
 
+<script>
+/* ==========================================
+   SIRTRos-CITY EAS – PUSH NOTIFICATIONS
+========================================== */
+
+const VAPID_PUBLIC_KEY = "SEM_DÁŠ_VAPID_PUBLIC_KEY";
+
+let pushSubscription = null;
+
+/* Převod VAPID klíče */
+function urlBase64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - base64String.length % 4) % 4);
+
+    const base64 = (
+        base64String +
+        padding
+    )
+        .replace(/-/g, "+")
+        .replace(/_/g, "/");
+
+    const rawData = atob(base64);
+
+    return Uint8Array.from(
+        [...rawData].map(char => char.charCodeAt(0))
+    );
+}
+
+/* Registrace Service Workeru */
+async function registerServiceWorker() {
+
+    if (!("serviceWorker" in navigator)) {
+        console.log("Service Worker není podporován.");
+        return null;
+    }
+
+    try {
+
+        const registration =
+            await navigator.serviceWorker.register("./sw.js");
+
+        console.log(
+            "Service Worker zaregistrován:",
+            registration.scope
+        );
+
+        return registration;
+
+    } catch (error) {
+
+        console.error(
+            "Chyba Service Workeru:",
+            error
+        );
+
+        return null;
+    }
+}
+
+/* Zapnutí push oznámení */
+async function enablePushNotifications() {
+
+    if (!("Notification" in window)) {
+
+        alert(
+            "Toto zařízení nepodporuje systémová oznámení."
+        );
+
+        return;
+    }
+
+    const permission =
+        await Notification.requestPermission();
+
+    if (permission !== "granted") {
+
+        alert(
+            "Oznámení nebyla povolena."
+        );
+
+        return;
+    }
+
+    const registration =
+        await registerServiceWorker();
+
+    if (!registration) return;
+
+    try {
+
+        pushSubscription =
+            await registration.pushManager.subscribe({
+
+                userVisibleOnly: true,
+
+                applicationServerKey:
+                    urlBase64ToUint8Array(
+                        VAPID_PUBLIC_KEY
+                    )
+
+            });
+
+        console.log(
+            "Push subscription:",
+            pushSubscription
+        );
+
+        /*
+         * TADY se později subscription
+         * odešle na tvůj server.
+         */
+
+        alert(
+            "🔔 Systémová oznámení jsou povolena."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Chyba při aktivaci Push:",
+            error
+        );
+
+        alert(
+            "Nepodařilo se aktivovat systémová oznámení."
+        );
+    }
+}
+
+/* Tlačítko POVOLIT OZNÁMENÍ */
+const notificationButton =
+    document.getElementById(
+        "notificationButton"
+    );
+
+if (notificationButton) {
+
+    notificationButton.addEventListener(
+        "click",
+        enablePushNotifications
+    );
+}
+
+/* Service Worker zaregistrujeme také při načtení */
+registerServiceWorker();
+
+</script>
+    
 </body>
         </html>
