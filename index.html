@@ -1810,6 +1810,8 @@ startButton.addEventListener(
 
         systemStarted = true;
 
+        await keepScreenAwake();
+
         try{
 
             if(!document.fullscreenElement){
@@ -2200,7 +2202,50 @@ function sendSystemNotification(
     }
 
 }
+    
+/* =====================================================
+   KEEP SCREEN AWAKE
+===================================================== */
 
+let wakeLock = null;
+
+async function keepScreenAwake(){
+
+    try{
+
+        if("wakeLock" in navigator){
+
+            wakeLock =
+                await navigator.wakeLock.request("screen");
+
+            console.log(
+                "🚨 EAS: OBRAZOVKA ZŮSTÁVÁ ZAPNUTÁ"
+            );
+
+            wakeLock.addEventListener(
+                "release",
+                () => {
+
+                    console.log(
+                        "⚠️ EAS: WAKE LOCK UVOLNĚN"
+                    );
+
+                }
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Wake Lock chyba:",
+            error
+        );
+
+    }
+
+}
+    
 /* =====================================================
    SHOW ALERT
 ===================================================== */
@@ -3302,12 +3347,14 @@ function formatTime(timestamp){
 
 document.addEventListener(
     "visibilitychange",
-    () => {
+    async () => {
 
         if(
             !document.hidden &&
             systemStarted
         ){
+
+            await keepScreenAwake();
 
             checkSupabase();
 
