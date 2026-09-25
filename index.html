@@ -1694,6 +1694,68 @@ let checkTimer = null;
 let notifiedAlertId = null;
 let dismissedAlertId = null;
 
+async function sendSystemNotification(type, id){
+
+    if(!("Notification" in window))
+        return;
+
+    if(Notification.permission !== "granted")
+        return;
+
+    if(!("serviceWorker" in navigator))
+        return;
+
+    try{
+
+        const registration =
+            await navigator.serviceWorker.ready;
+
+        let title = "ST-CITY EAS";
+        let body = "Je aktivní nové nouzové upozornění.";
+
+        if(type === "normal"){
+            title = "ST-CITY NOUZOVÉ UPOZORNĚNÍ";
+            body = "ZŮSTAŇTE UVNITŘ A SLEDUJTE POKYNY.";
+        }
+
+        else if(type === "high"){
+            title = "ST-CITY EAS • VYSOKÉ UPOZORNĚNÍ";
+            body = "V DOMĚ BYL ZAZNAMENÁN HMYZ.";
+        }
+
+        else if(type === "critical"){
+            title = "ST-CITY EAS • KRITICKÉ UPOZORNĚNÍ";
+            body = "OKAMŽITĚ SE ŘIĎTE POKYNY.";
+        }
+
+        else if(type === "gas"){
+            title = "ST-CITY EAS • NEBEZPEČNÝ PLYN";
+            body = "BYL ZAZNAMENÁN NEBEZPEČNÝ PLYN.";
+        }
+
+        await registration.showNotification(
+            title,
+            {
+                body: body,
+                icon: "./icon.png",
+                tag: "st-city-eas-" + id,
+                requireInteraction: true
+            }
+        );
+
+        console.log("🔔 EAS: oznámení odesláno");
+
+    }catch(error){
+
+        console.error(
+            "❌ EAS oznámení chyba:",
+            error
+        );
+
+    }
+
+}
+
 /* =====================================================
    NOTIFICATIONS
 ===================================================== */
@@ -2093,7 +2155,7 @@ function startAlert(
    SYSTEM NOTIFICATION
 ===================================================== */
 
-function sendSystemNotification(
+async function sendSystemNotification(
     type,
     id
 ){
@@ -2114,51 +2176,92 @@ function sendSystemNotification(
     )
         return;
 
+    if(
+        !("serviceWorker" in navigator)
+    )
+        return;
+
     notifiedAlertId = id;
 
-    let title;
-    let body;
+    try{
 
-    if(type === "critical"){
+        const registration =
+            await navigator.serviceWorker.ready;
 
-        title =
-            "🚨 ST-CITY EAS – KRITICKÉ UPOZORNĚNÍ";
+        let title =
+            "ST-CITY EAS";
 
-        body =
-            "Okamžitě se řiďte pokyny ST-CITY.";
+        let body =
+            "Je aktivní nové nouzové upozornění.";
+
+        if(type === "normal"){
+
+            title =
+                "🚨 ST-CITY EAS – NOUZOVÉ UPOZORNĚNÍ";
+
+            body =
+                "ZŮSTAŇTE UVNITŘ A SLEDUJTE POKYNY.";
+
+        }
+
+        else if(type === "high"){
+
+            title =
+                "🚨 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
+
+            body =
+                "V DOMĚ BYL ZAZNAMENÁN HMYZ.";
+
+        }
+
+        else if(type === "critical"){
+
+            title =
+                "🚨 ST-CITY EAS – KRITICKÉ UPOZORNĚNÍ";
+
+            body =
+                "OKAMŽITĚ SE ŘIĎTE POKYNY ST-CITY.";
+
+        }
+
+        else if(type === "gas"){
+
+            title =
+                "🚨 ST-CITY EAS – NEBEZPEČNÝ PLYN";
+
+            body =
+                "BYL ZAZNAMENÁN NEBEZPEČNÝ PLYN.";
+
+        }
+
+        await registration.showNotification(
+            title,
+            {
+                body: body,
+                icon: "./icon.png",
+                tag:
+                    "st-city-eas-" +
+                    id,
+                requireInteraction: true
+            }
+        );
+
+        console.log(
+            "🔔 ST-CITY EAS: oznámení odesláno"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "❌ ST-CITY EAS: chyba oznámení:",
+            error
+        );
 
     }
 
-    else if(type === "gas"){
-
-        title =
-            "🚨 ST-CITY EAS – NEBEZPEČNÝ PLYN";
-
-        body =
-            "Jděte domů, zavřete okna a dveře a zůstaňte uvnitř.";
-
-    }
-
-    else if(type === "high"){
-
-        title =
-            "🚨 ST-CITY EAS – VYSOKÉ UPOZORNĚNÍ";
-
-        body =
-            "V domě byl zaznamenán hmyz. Zachovejte klid.";
-
-    }
-
-    else{
-
-        title =
-            "🚨 ST-CITY EAS – NOUZOVÉ UPOZORNĚNÍ";
-
-        body =
-            "Zůstaňte uvnitř a sledujte další pokyny ST-CITY.";
-
-    }
-
+}
+    
     try{
 
         const notification =
