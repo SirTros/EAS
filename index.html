@@ -1694,6 +1694,50 @@ let checkTimer = null;
 let notifiedAlertId = null;
 let dismissedAlertId = null;
 
+
+/* =====================================================
+   KEEP SCREEN AWAKE
+===================================================== */
+
+let wakeLock = null;
+
+async function keepScreenAwake(){
+
+    if(!("wakeLock" in navigator))
+        return;
+
+    try{
+
+        wakeLock =
+            await navigator.wakeLock.request("screen");
+
+        console.log(
+            "💡 Displej zůstane zapnutý."
+        );
+
+        wakeLock.addEventListener(
+            "release",
+            () => {
+
+                console.log(
+                    "💡 Wake Lock uvolněn."
+                );
+
+            }
+        );
+
+    }catch(error){
+
+        console.warn(
+            "Wake Lock se nepodařilo aktivovat:",
+            error
+        );
+
+    }
+
+}
+    
+
 /* =====================================================
    NOTIFICATIONS
 ===================================================== */
@@ -1809,6 +1853,8 @@ startButton.addEventListener(
     async () => {
 
         systemStarted = true;
+
+        await keepScreenAwake();
 
         try{
 
@@ -3536,6 +3582,22 @@ if (notificationButton) {
 
 /* Service Worker zaregistrujeme také při načtení */
 registerServiceWorker();
+
+document.addEventListener(
+    "visibilitychange",
+    async () => {
+
+        if(
+            !document.hidden &&
+            systemStarted
+        ){
+
+            await keepScreenAwake();
+
+        }
+
+    }
+);
 
 </script>
     
